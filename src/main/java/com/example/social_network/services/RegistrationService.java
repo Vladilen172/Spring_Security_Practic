@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 public class RegistrationService {
 
     private final UserRepository userRepository;
-//    private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegistrationService(UserRepository userRepository) {
+    public RegistrationService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-//        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User registerUser(RegistrationRequest request) {
@@ -26,7 +26,7 @@ public class RegistrationService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return userRepository.save(user);
     }
